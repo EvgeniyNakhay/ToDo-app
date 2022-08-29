@@ -1,70 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import Task from './components/Task';
 import TaskInput from "./components/TaskInput";
 
-class App extends React.Component{
-  constructor() {
-    super();
+function App() {                                              // Основная компонента, которая подключает все остальные компоненты
 
-    this.state = {
-      tasks: [
-        { id: 0, title: 'Create todo-react app', done: false},
-        { id: 1, title: 'Make a video about it', done: true},
-        { id: 2, title: 'Create simple todo-app', done: false},
-      ]
+  const [todo, setTodo] = useState([                          // todo - наш список задач, setTodo - функция, которая меняет список todo
+    {
+      id: 0, title: 'First todo', done: false                 // хук useState в своих параметрах хранит начальное значение списка задач todo
+    },
+
+    {
+      id: 1, title: 'Second todo', done: false
+    },
+
+    {
+      id: 2, title: 'Third todo', done: false
     }
-  }
-
-  addTask = task => {
-    this.setState(state => {
-      let { tasks } = state;
-      tasks.push({
-        id: tasks.length !== 0 ? task.length : 0,
-        title: task,
-        done: false
-      });
-      return tasks;
-    })
-  }
-
-  doneTask = id => {
-    const index = this.state.tasks.map(task => task.id).indexOf(id);
-    this.setState(state => {
-      let { tasks } = state;
-      tasks[index].done = true;
-      return tasks;
-    });
-  };
-
-  deleteTask = id => {
-    const index = this.state.tasks.map(task => task.id).indexOf(id);
-    this.setState(state => {
-      let {tasks} = state;
-      delete tasks[index];
-      return tasks; 
-    })
-  };
-
-  render(){
-    const { tasks } = this.state;
-    const activeTasks = tasks.filter(task => !task.done)
-    const doneTasks = tasks.filter(task => task.done)
-
-    return (
-      <div className="App">
-        <h1 className="top">Active tasks: {activeTasks.length}</h1>
-        {[...activeTasks, ...doneTasks].map(task => (
-          <Task 
-          doneTask={() => this.doneTask(task.id)}
-          deleteTask={()=> this.deleteTask(task.id)} 
-          task={task} 
-          key={task.id}
-          ></Task>
-        ))}
-        <TaskInput addTask={this.addTask}></TaskInput>
-      </div>
-    )
-  }
+  ])
+  
+  return(
+    <div className="App">
+      <h1 className="top">ToDo list</h1>
+      <Task className = 'task' todo = {todo} setTodo = {setTodo} />              {/*Передадим в качестве props значения todo и setTodo компоненте Task*/}
+      <TaskInput todo = {todo} setTodo = {setTodo} />          {/*Передадим в качестве props значения todo и setTodo компоненте TaskInput*/}
+    </div>
+  )
 }
+
 
 export default App;

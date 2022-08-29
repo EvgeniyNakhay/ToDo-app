@@ -1,47 +1,39 @@
-import React from "react";
+import { Button, Input} from "antd";
+import React, {useState} from "react";
 
-class TaskInput extends React.Component{
-    constructor(props){
-        super(props);
+function TaskInput ({todo, setTodo}) {
 
-        this.state = {
-            input: ''
-        };
+    const [value, setValue] = useState('')
+
+    function addTodo() {
+        setTodo(
+            [...todo, {
+                id: todo.length !== 0 ? todo.length : 0,
+                title: value, 
+                done: false
+            }]
+        )
+        setValue('')                                                             // Обнуляем input: после ввода задачи поле ввода очищается 
     }
 
-    addTask = () => {
-        const { input } = this.state;
-        if (input) {
-            this.props.addTask(input);
-            this.setState({ input: '' });
+    function handleEnter(event) {
+        if (event.key === 'Enter') {
+            addTodo()
         }
     }
-
-    handleEnter = event => {
-        if(event.key === 'Enter')
-            this.addTask();
-    }
-
-    inputChange = event => {
-        this.setState({ input: event.target.value });
-    };
-
-    render(){
-        const { input } = this.state;
-        
-        return(
-            <div className="task-input">
-                <input 
-                    onKeyPress={this.handleEnter} 
-                    onChange={this.inputChange} 
-                    value={input}
-                    placeholder='Add a new task'
-                ></input>
-                <button onClick={this.addTask}>Add Todo</button>
-            </div>
-        )
-    }
     
-}
+    return(
+        <div className="task-input">
+            <Input 
+                onKeyPress = {handleEnter} 
+                placeholder = "Add a new task..." 
+                value = {value} 
+                onChange = { (e) => setValue(e.target.value) } />
+            <Button 
+                type = 'primary' 
+                onClick={addTodo} > Add ToDo </Button>
+        </div>
+    )
+} 
 
 export default TaskInput;
