@@ -20,10 +20,12 @@ function Task ({ todo, setTodo}) {                           //Примем пе
                 item.done = !item.done
             }
             return item
+            console.log(todo)
         })
+        console.log(newTodo)
         setTodo(newTodo)
     }
-
+    
     const editTask = (id, title) => {
         setEdit(id)
         setValue(title)
