@@ -15,7 +15,7 @@ function Task ({ todo, setTodo}) {                           //Примем пе
     }
 
     const checkTask = (id) => {
-        let newTodo = [...todo].filter(item => {
+        let newTodo = [...todo].map(item => {
             if (item.id === id) {
                 item.done = !item.done
             }
