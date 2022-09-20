@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Button, Input, Checkbox } from 'antd';
 
 function Task ({ todo, setTodo}) {                           //Примем переданные props 
-    
+
     const [edit, setEdit] = useState(null)                  // По умочанию false - мы находимся вне режима редактирования
     
     const [value, setValue] = useState('')                  // Зададим state для поля редактирования
@@ -20,7 +20,6 @@ function Task ({ todo, setTodo}) {                           //Примем пе
                 item.done = !item.done
             }
             return item
-            console.log(todo)
         })
         console.log(newTodo)
         setTodo(newTodo)

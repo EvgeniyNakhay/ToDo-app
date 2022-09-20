@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Task from './components/Task';
 import TaskInput from "./components/TaskInput";
+import {Provider} from 'react-redux';
+import store from './redux/store';
 
 function App() {                                              // Основная компонента, которая подключает все остальные компоненты
 
@@ -21,8 +23,10 @@ function App() {                                              // Основна�
   return(
     <div className="App">
       <h1 className="top">ToDo list</h1>
+      <Provider store = {store}>
       <Task className = 'task' todo = {todo} setTodo = {setTodo} />              {/*Передадим в качестве props значения todo и setTodo компоненте Task*/}
       <TaskInput todo = {todo} setTodo = {setTodo} />          {/*Передадим в качестве props значения todo и setTodo компоненте TaskInput*/}
+      </Provider>
     </div>
   )
 }
