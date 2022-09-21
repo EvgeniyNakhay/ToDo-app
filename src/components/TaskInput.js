@@ -1,22 +1,19 @@
-import { Button, Input } from "antd";
-import { setTask } from '../redux/actions/tasksAction';
-import { useDispatch, useSelector } from 'react-redux';
+import { Button, Input} from "antd";
+import React, {useState} from "react";
 
 function TaskInput ({todo, setTodo}) {
 
-    const dispatch = useDispatch();
-
-    const todos = useSelector((store) => store.todos)
+    const [value, setValue] = useState('')
 
     function addTodo() {
-        setTask(
+        setTodo(
             [...todo, {
                 id: todo.length !== 0 ? todo.length : 0,
-                title: todos, 
+                title: value, 
                 done: false
             }]
         )
-        setTask('')                                                             // Обнуляем input: после ввода задачи поле ввода очищается 
+        setValue('')                                                             // Обнуляем input: после ввода задачи поле ввода очищается 
     }
 
     function handleEnter(event) {
@@ -30,8 +27,8 @@ function TaskInput ({todo, setTodo}) {
             <Input 
                 onKeyPress = {handleEnter} 
                 placeholder = "Add a new task..." 
-                value = {todos} 
-                onChange = { (e) => dispatch(setTask(e.target.value)) } />
+                value = {value} 
+                onChange = { (e) => setValue(e.target.value) } />
             <Button 
                 type = 'primary' 
                 onClick={addTodo} > Add ToDo </Button>
