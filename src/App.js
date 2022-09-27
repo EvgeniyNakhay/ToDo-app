@@ -1,31 +1,15 @@
-import React, { useState } from "react";
 import Task from './components/Task';
 import TaskInput from "./components/TaskInput";
 import {Provider} from 'react-redux';
 import store from './redux/store';
 
-function App() {                                              // Основная компонента, которая подключает все остальные компоненты
-
-  const [todo, setTodo] = useState([                          // todo - наш список задач, setTodo - функция, которая меняет список todo
-    {
-      id: 0, title: 'First todo', done: false                 // хук useState в своих параметрах хранит начальное значение списка задач todo
-    },
-
-    {
-      id: 1, title: 'Second todo', done: false
-    },
-
-    {
-      id: 2, title: 'Third todo', done: false
-    }
-  ])
-  
+function App() {                                             
   return(
     <div className="App">
       <h1 className="top">ToDo list</h1>
-      <Provider store = {store}>
-      <Task className = 'task' todo = {todo} setTodo = {setTodo} />              {/*Передадим в качестве props значения todo и setTodo компоненте Task*/}
-      <TaskInput todo = {todo} setTodo = {setTodo} />          {/*Передадим в качестве props значения todo и setTodo компоненте TaskInput*/}
+      <Provider store = {store}>                {/* 1) Оборачиваем в Provider компоненты, которым будет доступен store */}
+      <Task className = 'task'/>
+      <TaskInput/>          
       </Provider>
     </div>
   )

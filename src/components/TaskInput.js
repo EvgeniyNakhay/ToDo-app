@@ -1,20 +1,26 @@
 import { Button, Input} from "antd";
-import React, {useState} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setText } from "../redux/actions/textAction";
+import store from "../redux/store";
+import {addTask} from '../redux/actions/tasksAction';
 
-function TaskInput ({todo, setTodo}) {
+function TaskInput () {
 
-    const [value, setValue] = useState('')
-
+    const dispatch = useDispatch();                                        // 6) Чтобы actionCreacter вызвать, нужно её обернуть
+    const text = useSelector((store) => store.text)                      //    в функцию useDispatch()
+    const todos = useSelector((store) => store.todos)
+    
     function addTodo() {
-        setTodo(
-            [...todo, {
-                id: todo.length !== 0 ? todo.length : 0,
-                title: value, 
-                done: false
-            }]
-        )
-        setValue('')                                                             // Обнуляем input: после ввода задачи поле ввода очищается 
-    }
+            dispatch(addTask(text))
+            addTask('')
+            // ([...todos, {
+            //     id: todos.length !== 0 ? todos.length : 0,
+            //     title: value, 
+            //     done: false
+            // }])
+            // // ('')                                                             // Обнуляем input: после ввода задачи поле ввода очищается 
+
+        }
 
     function handleEnter(event) {
         if (event.key === 'Enter') {
@@ -27,9 +33,10 @@ function TaskInput ({todo, setTodo}) {
             <Input 
                 onKeyPress = {handleEnter} 
                 placeholder = "Add a new task..." 
-                value = {value} 
-                onChange = { (e) => setValue(e.target.value) } />
-            <Button 
+                value = {text} 
+                onChange = { (e) => dispatch(setText(e.target.value)) } />    {/* 7) Вызываем actionCreater */}
+                
+            <Button
                 type = 'primary' 
                 onClick={addTodo} > Add ToDo </Button>
         </div>
