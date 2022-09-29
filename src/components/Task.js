@@ -1,19 +1,30 @@
-import React, {useState} from "react";
+import { useState } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { Button, Input, Checkbox } from 'antd';
-import addTodo from './TaskInput';
 import {deleteTask, checkTask} from '../redux/actions/tasksAction';
+import {setEditedTask} from '../redux/actions/textAction';
+import { setText } from "../redux/actions/textAction";
 
 function Task () {                           //Примем переданные props 
 
     const dispatch = useDispatch();
 
     const todos = useSelector((store) => store.todos)
+    const text = useSelector((store) => store.text)
 
-    const [edit, setEdit] = useState(null)                  // По умочанию false - мы находимся вне режима редактирования
+    const [isEdit, setIsEdit] = useState(false)                  // По умочанию false - мы находимся вне режима редактирования
     
     const [value, setValue] = useState('')                  // Зададим state для поля редактирования
     
+    const handleEdit = (id, value) => {
+        setIsEdit(id)
+        setValue(value)
+    }
+
+    const saveEditedTask = (id, value) => {
+        setIsEdit(id)
+        setValue(value)
+    }
     // const deleteTask = (id) => {
     //     const newTodo = [...todos].filter(item => 
     //         item.id !== id
@@ -31,29 +42,34 @@ function Task () {                           //Примем переданные
     //     // setTodo(newTodo)
     // }
     
-    const editTask = (id, title) => {
-        setEdit(id)
-        setValue(title)
-    }
+    // const editTask = (id, title) => {
+    //     setEdit(id)
+    //     setValue(title)
+    // }
 
-    const saveTask = (id) => {
-        const newTodo = [...todos].map(item => {
-            if (item.id === id) {
-                item.title = value
-            }
-            return item
-        })
-        addTodo(newTodo)
-        setEdit(null)
-    }
+    // const saveTask = (id) => {
+    //     const newTodo = [...todos].map(item => {
+    //         if (item.id === id) {
+    //             item.title = value
+    //         }
+    //         return item
+    //     })
+    //     addTodo(newTodo)
+    //     setEdit(null)
+    // }
     
     return <>
         { todos.map( item => (
             <div key = {item.id} className='listTasks'>
                 {
-                    edit === item.id ? 
+                    isEdit === item.id ? 
                         <div className="input-change">
-                            <Input onChange={(e) => setValue(e.target.value)} value={value}/>        {/* value - значение по умолчанию */}
+                            <Input 
+                            // onPressEnter={() => }
+                            defaultValue={value}
+                            // value = {text} 
+                            onChange={(e) => dispatch(setEditedTask(e.target.value))}
+                            />        {/* value - значение по умолчанию */}
                         </div>
                         :
                         <div className = { item.done ? "chekedTask" : ''}>
@@ -63,15 +79,15 @@ function Task () {                           //Примем переданные
                     }
 
                     {
-                        edit === item.id ?
+                        isEdit === item.id ?
                             <>
-                                <Button type = 'primary' onClick={() => saveTask(item.id)}>💾</Button>
+                            <Button type = 'primary' onClick={() => saveEditedTask(item.id, item.title)}>💾</Button>
                             </>
                             :
                             <div className="task">
-                                <Button type = 'primary' onClick = { () => editTask(item.id, item.title)}>📝</Button>
+                                <Button type = 'primary' onClick = { () => handleEdit(item.id, item.title)}>📝</Button>
                                 <Button type = 'primary' onClick = { () => dispatch(deleteTask(item.id))}>❌</Button>
-                            </div>
+                            </div>    
                     }
                 </div>
                 
@@ -79,4 +95,4 @@ function Task () {                           //Примем переданные
         </>
 }
 
-export default Task;
+export default Task;    

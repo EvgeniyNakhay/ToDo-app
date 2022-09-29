@@ -1,4 +1,4 @@
-import { SET_TODO, DELETE_TASK, CHECK_TASK} from "./actionTypes";
+import { SET_TODO, DELETE_TASK, CHECK_TASK, SAVE_EDITED_TASK} from "./actionTypes";
 
 export const addTask = (data) => {            // 5) Создаём функцию ActionCreater, кот возвращает объект
     return {
@@ -21,4 +21,9 @@ export const checkTask = (data) => {
     }
 }
 
-
+export const saveEditedTask = (data) => {            
+    return {
+        type: SAVE_EDITED_TASK,
+        payload: data,                       
+    }
+}

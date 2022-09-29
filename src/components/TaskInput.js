@@ -10,9 +10,12 @@ function TaskInput () {
     const text = useSelector((store) => store.text)                      //    в функцию useDispatch()
     const todos = useSelector((store) => store.todos)
     
+    function setTodo() {
+        
+    }
     function addTodo() {
             dispatch(addTask(text))
-            addTask('')
+            dispatch(setText(''))
             // ([...todos, {
             //     id: todos.length !== 0 ? todos.length : 0,
             //     title: value, 
@@ -38,7 +41,7 @@ function TaskInput () {
                 
             <Button
                 type = 'primary' 
-                onClick={addTodo} > Add ToDo </Button>
+                onClick={() => addTodo()}> Add ToDo </Button>
         </div>
     )
 } 
