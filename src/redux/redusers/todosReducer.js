@@ -1,4 +1,4 @@
-import { SET_EDITED_TASK, SET_TODO, DELETE_TASK, CHECK_TASK, SAVE_EDITED_TASK} from '../actions/actionTypes';
+import {SET_TODO, DELETE_TASK, CHECK_TASK, UPDATE_TASK} from '../actions/actionTypes';
                                                       
 const initialValue = [                                 // initialValue - начальное значение
     {
@@ -30,12 +30,18 @@ export default function todosReducer(state = initialValue, action) {  // 3) Со
               : item
           );
         }
-        case SET_EDITED_TASK: {
-          return action.payload;
-        }
-        case SAVE_EDITED_TASK: {
-          return [...state , {id: state.length, title: action.payload, done: false}];
-        }
+        case UPDATE_TASK: {
+          const editedArr = [];
+          state.map((item) => {
+              if(item.id === action.payload.id){
+                  item.id = action.payload.id;
+                  item.title = action.payload.title;
+                  item.done = action.payload.done;
+              }
+          editedArr.push(item)
+          })
+          return editedArr;
+      } 
         // case SET_EDITED_TASK: {
         //     return [...state , {id: state.length, title: action.payload, done: false}];
         // }

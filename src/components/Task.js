@@ -1,79 +1,42 @@
 import { useState } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { Button, Input, Checkbox } from 'antd';
-import {deleteTask, checkTask} from '../redux/actions/tasksAction';
-import {setEditedTask} from '../redux/actions/textAction';
-import { setText } from "../redux/actions/textAction";
+import {deleteTask, checkTask, updateTask} from '../redux/actions/tasksAction';
+import { setEditedText } from "../redux/actions/editedTextAction";
 
-function Task () {                           //Примем переданные props 
+function Task () {                           
 
     const dispatch = useDispatch();
 
     const todos = useSelector((store) => store.todos)
-    const text = useSelector((store) => store.text)
+    const editedText = useSelector((store) => store.editedText)
 
     const [isEdit, setIsEdit] = useState(false)                  // По умочанию false - мы находимся вне режима редактирования
     
-    const [value, setValue] = useState('')                  // Зададим state для поля редактирования
-    
-    const handleEdit = (id, value) => {
+    function handleEdit(id) {
         setIsEdit(id)
-        setValue(value)
     }
-
-    const saveEditedTask = (id, value) => {
-        setIsEdit(id)
-        setValue(value)
-    }
-    // const deleteTask = (id) => {
-    //     const newTodo = [...todos].filter(item => 
-    //         item.id !== id
-    //     )
-    // }
-
-    // const checkTask = (id) => {
-    //     let newTodo = [...todos].filter(item => {
-    //         if (item.id === id) {
-    //             item.done = !item.done
-    //         }
-    //         return item
-    //     })
-    //     console.log(newTodo)
-    //     // setTodo(newTodo)
-    // }
     
-    // const editTask = (id, title) => {
-    //     setEdit(id)
-    //     setValue(title)
-    // }
-
-    // const saveTask = (id) => {
-    //     const newTodo = [...todos].map(item => {
-    //         if (item.id === id) {
-    //             item.title = value
-    //         }
-    //         return item
-    //     })
-    //     addTodo(newTodo)
-    //     setEdit(null)
-    // }
+    function updateTaskClick(id) {
+        dispatch(updateTask(id, editedText))
+        setIsEdit(false)
+    }
     
     return <>
         { todos.map( item => (
             <div key = {item.id} className='listTasks'>
                 {
-                    isEdit === item.id ? 
+                    isEdit === item.id ?  
                         <div className="input-change">
                             <Input 
-                            // onPressEnter={() => }
-                            defaultValue={value}
-                            // value = {text} 
-                            onChange={(e) => dispatch(setEditedTask(e.target.value))}
-                            />        {/* value - значение по умолчанию */}
+                            onPressEnter={() => updateTaskClick(item.id)}
+                            defaultValue={item.title} 
+                            onChange={(e) => dispatch(setEditedText(e.target.value))}
+                            />        
                         </div>
                         :
                         <div className = { item.done ? "chekedTask" : ''}>
-                            <Checkbox onClick = { () => dispatch(checkTask(item.id))} />
+                            <Checkbox onClick = { () => dispatch(checkTask(item))} />
                             { item.title }
                         </div>
                     }
@@ -81,11 +44,11 @@ function Task () {                           //Примем переданные
                     {
                         isEdit === item.id ?
                             <>
-                            <Button type = 'primary' onClick={() => saveEditedTask(item.id, item.title)}>💾</Button>
+                            <Button type = 'primary' onClick={() => updateTaskClick(item.id)}>💾</Button>
                             </>
                             :
                             <div className="task">
-                                <Button type = 'primary' onClick = { () => handleEdit(item.id, item.title)}>📝</Button>
+                                <Button type = 'primary' onClick = { () => handleEdit(item.id)}>📝</Button>
                                 <Button type = 'primary' onClick = { () => dispatch(deleteTask(item.id))}>❌</Button>
                             </div>    
                     }
