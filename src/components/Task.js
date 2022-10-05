@@ -36,7 +36,7 @@ function Task () {
                         </div>
                         :
                         <div className = { item.done ? "chekedTask" : ''}>
-                            <Checkbox onClick = { () => dispatch(checkTask(item))} />
+                            <Checkbox onClick = { () => dispatch(checkTask(item.id))} />
                             { item.title }
                         </div>
                     }
