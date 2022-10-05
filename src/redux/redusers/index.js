@@ -7,5 +7,4 @@ export default combineReducers({
     text: textReducer,               // text - поле, textReducer - reducer
     todos: todosReducer,             // 2) Создаём новое поле и указываем reduser, который меняет это поле 
     editedText: editedTextReducer,
-    // editedTodos: editedTodosReducer
 })

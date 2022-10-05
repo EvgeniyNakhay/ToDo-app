@@ -11,14 +11,14 @@ function Task () {
     const todos = useSelector((store) => store.todos)
     const editedText = useSelector((store) => store.editedText)
 
-    const [isEdit, setIsEdit] = useState(false)                  // По умочанию false - мы находимся вне режима редактирования
+    const [isEdit, setIsEdit] = useState(null)                  // По умочанию false - мы находимся вне режима редактирования task
     
-    function handleEdit(id) {
-        setIsEdit(id)
+    function handleEdit(id) {                                    // При вызове изменяем состояние и переходим в режим редактирования task
+        setIsEdit(id)                                            // id передаём, чтобы определить какая task
     }
-    
-    function updateTaskClick(id) {
-        dispatch(updateTask(id, editedText))
+
+    function updateTaskClick(id) {                               // Сохраняем изменёную task
+        dispatch(updateTask(id, editedText))                     
         setIsEdit(false)
     }
     
